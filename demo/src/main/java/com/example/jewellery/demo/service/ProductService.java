@@ -14,7 +14,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    // 🔥 Normal constructor (no Lombok)
+    // Normal constructor
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -28,10 +28,13 @@ public class ProductService {
 
     public Product updateProduct(String id, Product product) {
         return productRepository.findById(id).map(existing -> {
+
             existing.setProductName(product.getProductName());
             existing.setDescription(product.getDescription());
-            existing.setCategoryId(product.getCategoryId());
-            existing.setSubCategory(product.getSubCategory());
+
+            // 🔥 MULTI CATEGORY UPDATE
+            existing.setCategoryIds(product.getCategoryIds());
+
             existing.setPrice(product.getPrice());
             existing.setMrp(product.getMrp());
             existing.setDiscountPercent(calculateDiscount(product.getMrp(), product.getPrice()));
@@ -46,7 +49,9 @@ public class ProductService {
             existing.setSku(product.getSku());
             existing.setBrand(product.getBrand());
             existing.setUpdatedAt(LocalDateTime.now());
+
             return productRepository.save(existing);
+
         }).orElse(null);
     }
 
@@ -62,8 +67,9 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    // 🔥 MULTI CATEGORY FILTER (Correct Method)
     public List<Product> findByCategory(String catId) {
-        return productRepository.findByCategoryId(catId);
+        return productRepository.findByCategoryIdsContaining(catId);
     }
 
     public List<Product> searchByName(String productName) {

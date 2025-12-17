@@ -30,7 +30,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Disable CSRF
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**", "/api/products/**", "/uploads/**").permitAll()
-                .requestMatchers("/api/admin/**", "/uploads/**","/api/categories/**","/api/products/**","/api/images/**").permitAll()
+                .requestMatchers("/api/admin/**","/api/categories/**","/api/categories/image/**", "/uploads/**","/api/products/**","/api/images/**").permitAll()
                 .requestMatchers("/api/wishlist/**").permitAll()
 
                 .anyRequest().authenticated()

@@ -6,5 +6,9 @@ import com.example.jewellery.demo.model.Product;
 
 public interface ProductRepository extends MongoRepository<Product, String> {
     List<Product> findByProductNameContainingIgnoreCase(String productName);
-    List<Product> findByCategoryId(String categoryId);
+    // 🔥 MULTI-CATEGORY FILTER
+    List<Product> findByCategoryIdsContaining(String categoryId);
+    List<Product> findByBrand(String brand);
+
+    List<Product> findByInStock(boolean inStock);
 }

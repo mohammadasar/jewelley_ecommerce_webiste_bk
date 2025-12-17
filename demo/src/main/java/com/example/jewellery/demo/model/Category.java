@@ -14,7 +14,10 @@ public class Category {
 private String id;
 private String name; // Necklace, Earrings, Bangles, etc.
 private String parentId; // for subcategories (nullable)
+private int level;         // 1,2,3,4 (category depth)
 private String description;
+private String imageUrl;   // category image
+
 public String getId() {
 	return id;
 }
@@ -33,12 +36,26 @@ public String getParentId() {
 public void setParentId(String parentId) {
 	this.parentId = parentId;
 }
+
+public int getLevel() {
+	return level;
+}
+public void setLevel(int level) {
+	this.level = level;
+}
 public String getDescription() {
 	return description;
 }
 public void setDescription(String description) {
 	this.description = description;
 }
+public String getImageUrl() {
+	return imageUrl;
+}
+public void setImageUrl(String imageUrl) {
+	this.imageUrl = imageUrl;
+}
+
 
 
 }

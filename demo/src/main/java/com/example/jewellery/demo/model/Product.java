@@ -19,9 +19,9 @@ public class Product {
 private String id;
 private String productName;
 private String description;
-private String categoryId; // reference to Category id
-private String subCategory;
-
+private List<String> categoryIds;// reference to Category id
+//private String subCategory;
+private String categoryPath;   // breadcrumb path
 
 private double price;
 private double mrp;
@@ -66,17 +66,20 @@ public String getDescription() {
 public void setDescription(String description) {
 	this.description = description;
 }
-public String getCategoryId() {
-	return categoryId;
+
+public List<String> getCategoryIds() {
+	return categoryIds;
 }
-public void setCategoryId(String categoryId) {
-	this.categoryId = categoryId;
+public void setCategoryIds(List<String> categoryIds) {
+	this.categoryIds = categoryIds;
 }
-public String getSubCategory() {
-	return subCategory;
+
+
+public String getCategoryPath() {
+	return categoryPath;
 }
-public void setSubCategory(String subCategory) {
-	this.subCategory = subCategory;
+public void setCategoryPath(String categoryPath) {
+	this.categoryPath = categoryPath;
 }
 public double getPrice() {
 	return price;
