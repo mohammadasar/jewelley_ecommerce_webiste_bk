@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.Customizer;
 
 @Configuration
 @EnableMethodSecurity
@@ -27,10 +28,16 @@ public class SecurityConfig {
         JwtAuthFilter jwtFilter = new JwtAuthFilter(jwtUtil, userDetailsService);
 
         http
+            .cors(Customizer.withDefaults())    // ✅ VERY IMPORTANT (THIS LINE WAS MISSING)
+           
             .csrf(csrf -> csrf.disable()) // Disable CSRF
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**", "/api/products/**", "/uploads/**").permitAll()
-                .requestMatchers("/api/admin/**","/api/categories/**","/api/categories/image/**", "/uploads/**","/api/products/**","/api/images/**").permitAll()
+                .requestMatchers("/api/admin/**","/api/categories/**","/api/categories/image/**",
+                		"/uploads/**","/api/products/**",
+                		"/api/images/**","/api/orders/**","/api/orders/admin/**"
+                		,"/api/invoices/admin/**","/api/invoices/**").permitAll()
+                
                 .requestMatchers("/api/wishlist/**").permitAll()
 
                 .anyRequest().authenticated()
