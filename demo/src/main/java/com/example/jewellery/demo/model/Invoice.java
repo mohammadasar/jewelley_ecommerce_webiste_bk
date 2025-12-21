@@ -21,7 +21,7 @@ public class Invoice {
 
     private String orderId;          // DB Order ID
     private String orderCode;        // ORD-2025-0001
-
+    private String customerName;
     private String customerWhatsapp;
     private String customerAddress;
 
@@ -68,6 +68,15 @@ public class Invoice {
 
 	public void setOrderCode(String orderCode) {
 		this.orderCode = orderCode;
+	}
+
+	
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
 	public String getCustomerWhatsapp() {

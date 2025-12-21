@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.jewellery.demo.model.Invoice;
 import com.example.jewellery.demo.model.Order;
+import com.example.jewellery.demo.model.User;
 import com.example.jewellery.demo.repository.InvoiceRepository;
 import com.example.jewellery.demo.repository.OrderRepository;
+import com.example.jewellery.demo.repository.UserRepository;
 
 
 
@@ -19,13 +21,23 @@ public class InvoiceService {
 
     @Autowired
     private OrderRepository orderRepo;
+    
+    @Autowired
+    private UserRepository userRepo;
+
 
     @Autowired
     private InvoiceNumberService invoiceNumberService;
 
     public Invoice generateInvoice(String orderId) {
 
-        Order order = orderRepo.findById(orderId).orElseThrow();
+    	Order order = orderRepo.findById(orderId)
+    	        .orElseThrow(() -> new RuntimeException("Order not found"));
+
+    	User user = userRepo.findById(order.getUserId())
+    	        .orElseThrow(() -> new RuntimeException("User not found"));
+
+
 
         // Prevent duplicate invoice
         if (invoiceRepo.findByOrderId(orderId) != null) {
@@ -36,8 +48,9 @@ public class InvoiceService {
         invoice.setInvoiceNumber(invoiceNumberService.generateInvoiceNumber());
         invoice.setOrderId(order.getId());
         invoice.setOrderCode(order.getOrderId());
-        invoice.setCustomerWhatsapp(order.getWhatsappNumber());
-        invoice.setCustomerAddress(order.getAddress());
+        invoice.setCustomerName(user.getName());
+        invoice.setCustomerWhatsapp(user.getWhatsappNumber());
+        invoice.setCustomerAddress(user.getAddress());
         invoice.setItems(order.getItems());
 
         invoice.setSubTotal(order.getTotalAmount());

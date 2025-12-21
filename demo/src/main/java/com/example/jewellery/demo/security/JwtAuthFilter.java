@@ -39,4 +39,15 @@ SecurityContextHolder.getContext().setAuthentication(auth);
 }
 filterChain.doFilter(request, response);
 }
+
+@Override
+protected boolean shouldNotFilter(HttpServletRequest request) {
+    String path = request.getServletPath();
+
+    return path.startsWith("/api/auth/")   // login, signup
+        || path.startsWith("/public/")   // public content only
+        || path.startsWith("/uploads/")
+        || path.startsWith("/api/categories/image-file/");
+}
+
 }

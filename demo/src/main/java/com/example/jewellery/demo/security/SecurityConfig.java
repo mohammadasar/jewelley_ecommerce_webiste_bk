@@ -32,13 +32,42 @@ public class SecurityConfig {
            
             .csrf(csrf -> csrf.disable()) // Disable CSRF
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/api/products/**", "/uploads/**").permitAll()
-                .requestMatchers("/api/admin/**","/api/categories/**","/api/categories/image/**",
-                		"/uploads/**","/api/products/**",
-                		"/api/images/**","/api/orders/**","/api/orders/admin/**"
-                		,"/api/invoices/admin/**","/api/invoices/**").permitAll()
+//                .requestMatchers("/api/auth/**", "/api/products/**", "/uploads/**").permitAll()
+//                .requestMatchers("/api/admin/**","/api/categories/**","/api/categories/image/**",
+//                		"/uploads/**","/api/products/**",
+//                		"/api/images/**","/api/orders/**","/api/orders/admin/**"
+//                		,"/api/invoices/admin/**","/api/invoices/**").permitAll()
+            		 // Public
+            	    .requestMatchers(
+            	        "/api/auth/**",
+            	        "/api/products/**",
+            	        "/api/categories/all",
+            	        "/api/categories/image-file/**",
+            	        "/uploads/**"
+            	    ).permitAll()
+
+            	    // Admin only
+            	    .requestMatchers(
+            	        "/api/admin/**",
+            	        "/api/categories/**",
+            	        "/api/images/**",
+            	        "/api/user/me",
+            	        "/api/orders/admin/**",
+            	        "/api/invoices/admin/**"
+            	    ).hasRole("ADMIN")
+
+            	    // User (logged-in customers)
+            	    .requestMatchers(
+            	        "/api/orders/**",
+            	        "/api/invoices/**",
+            	        "/api/wishlist/**"
+            	    ).hasAnyRole("USER", "ADMIN")
+
+            	   
                 
-                .requestMatchers("/api/wishlist/**").permitAll()
+                
+                .requestMatchers("/api/user/**").authenticated()
+//                .requestMatchers("/api/wishlist/**").permitAll()
 
                 .anyRequest().authenticated()
             )

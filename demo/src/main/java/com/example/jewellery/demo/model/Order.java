@@ -30,6 +30,7 @@ public class Order {
     private String paymentMode;      // UPI / Bank / Cash
     private String paymentRefId;     // UPI reference ID
     private LocalDateTime paidAt;
+    private String userId;
 
 
     public String getPaymentMode() {
@@ -55,25 +56,7 @@ public class Order {
 	public void setPaidAt(LocalDateTime paidAt) {
 		this.paidAt = paidAt;
 	}
-
-	@NotBlank
-    @Pattern(regexp = "^[6-9]\\d{9}$")
-    private String whatsappNumber;
-
-    @Pattern(regexp = "^[6-9]\\d{9}$")
-    private String alternateNumber;
-
-    @NotBlank
-    private String address;
-
-    @Pattern(regexp = "^\\d{6}$")
-    private String pincode;
-
-    @NotBlank
-    private String state;
-
-    @NotBlank
-    private String district;
+    
 
     private List<CartItem> items;
 
@@ -99,53 +82,7 @@ public class Order {
 		this.orderId = orderId;
 	}
 
-	public String getWhatsappNumber() {
-		return whatsappNumber;
-	}
-
-	public void setWhatsappNumber(String whatsappNumber) {
-		this.whatsappNumber = whatsappNumber;
-	}
-
-	public String getAlternateNumber() {
-		return alternateNumber;
-	}
-
-	public void setAlternateNumber(String alternateNumber) {
-		this.alternateNumber = alternateNumber;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getPincode() {
-		return pincode;
-	}
-
-	public void setPincode(String pincode) {
-		this.pincode = pincode;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getDistrict() {
-		return district;
-	}
-
-	public void setDistrict(String district) {
-		this.district = district;
-	}
+	
 
 	public List<CartItem> getItems() {
 		return items;
@@ -178,6 +115,15 @@ public class Order {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	
     
     
 }
