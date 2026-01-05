@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.jewellery.demo.model.Order;
+import com.example.jewellery.demo.model.User;
 import com.example.jewellery.demo.repository.OrderRepository;
 import com.example.jewellery.demo.service.InvoiceService;
 import com.example.jewellery.demo.service.OrderIdService;
+import com.example.jewellery.demo.service.UserServiceImpl;
 
 
 @RestController
@@ -34,19 +36,47 @@ public class OrderController {
     }
 
     // ✅ PLACE ORDER
+//    @PostMapping("/place")
+//    public Order placeOrder(@Valid @RequestBody Order order) {
+//
+//        order.setOrderId(orderIdService.generateOrderId());
+//
+//        // calculate total using double
+//        double total = order.getItems()
+//                .stream()
+//                .mapToDouble(i -> i.getPrice() * i.getQuantity())
+//                .sum();
+//
+//        order.setTotalAmount(total);
+//
+//        return orderRepo.save(order);
+//    }
+    @Autowired
+    private UserServiceImpl userService;  // inject your existing user service
+
     @PostMapping("/place")
     public Order placeOrder(@Valid @RequestBody Order order) {
 
+        // 1️⃣ Get logged-in user
+        User loggedInUser = userService.getLoggedInUser();
+        if (loggedInUser == null) {
+            throw new RuntimeException("User must be logged in to place order");
+        }
+
+        // 2️⃣ Set userId
+        order.setUserId(loggedInUser.getId());
+
+        // 3️⃣ Generate order ID
         order.setOrderId(orderIdService.generateOrderId());
 
-        // calculate total using double
+        // 4️⃣ Calculate total
         double total = order.getItems()
                 .stream()
                 .mapToDouble(i -> i.getPrice() * i.getQuantity())
                 .sum();
-
         order.setTotalAmount(total);
 
+        // 5️⃣ Save order
         return orderRepo.save(order);
     }
 

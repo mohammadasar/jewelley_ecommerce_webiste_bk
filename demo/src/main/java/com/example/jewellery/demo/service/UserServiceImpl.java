@@ -5,6 +5,7 @@ package com.example.jewellery.demo.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -33,15 +34,20 @@ public class UserServiceImpl {
     }
     // ✅ GET LOGGED-IN USER
     public User getLoggedInUser() {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth == null || !auth.isAuthenticated()) {
-            throw new RuntimeException("User not authenticated");
+        if (auth == null ||
+            !auth.isAuthenticated() ||
+            auth instanceof AnonymousAuthenticationToken) {
+            return null; // or throw custom exception
         }
 
-        String username = auth.getName(); // username from JWT
+        String username = auth.getName(); // JWT username
+
         return userRepository.findByUsername(username);
     }
+
     // ✅ UPDATE LOGGED-IN USER PROFILE
     public User updateProfile(UserProfileDto dto) {
 

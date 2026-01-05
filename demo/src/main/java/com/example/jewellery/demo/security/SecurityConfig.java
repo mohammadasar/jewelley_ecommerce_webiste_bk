@@ -37,6 +37,7 @@ public class SecurityConfig {
 //                		"/uploads/**","/api/products/**",
 //                		"/api/images/**","/api/orders/**","/api/orders/admin/**"
 //                		,"/api/invoices/admin/**","/api/invoices/**").permitAll()
+            		
             		 // Public
             	    .requestMatchers(
             	        "/api/auth/**",
@@ -51,8 +52,8 @@ public class SecurityConfig {
             	        "/api/admin/**",
             	        "/api/categories/**",
             	        "/api/images/**",
-            	        "/api/user/me",
             	        "/api/orders/admin/**",
+            	        "/api/inventory/**",
             	        "/api/invoices/admin/**"
             	    ).hasRole("ADMIN")
 
@@ -60,13 +61,15 @@ public class SecurityConfig {
             	    .requestMatchers(
             	        "/api/orders/**",
             	        "/api/invoices/**",
+            	        "/api/user/**",
             	        "/api/wishlist/**"
             	    ).hasAnyRole("USER", "ADMIN")
 
             	   
                 
+//            	    .requestMatchers("/api/user/me").permitAll()
+
                 
-                .requestMatchers("/api/user/**").authenticated()
 //                .requestMatchers("/api/wishlist/**").permitAll()
 
                 .anyRequest().authenticated()

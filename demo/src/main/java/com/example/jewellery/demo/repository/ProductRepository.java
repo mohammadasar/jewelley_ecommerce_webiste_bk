@@ -11,4 +11,6 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     List<Product> findByBrand(String brand);
 
     List<Product> findByInStock(boolean inStock);
+    
+    List<Product> findByQuantityLessThan(int quantity);
 }

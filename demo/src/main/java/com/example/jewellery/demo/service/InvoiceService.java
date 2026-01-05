@@ -31,15 +31,22 @@ public class InvoiceService {
 
     public Invoice generateInvoice(String orderId) {
 
-    	Order order = orderRepo.findById(orderId)
-    	        .orElseThrow(() -> new RuntimeException("Order not found"));
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
 
-    	User user = userRepo.findById(order.getUserId())
-    	        .orElseThrow(() -> new RuntimeException("User not found"));
+        System.out.println("ORDER ID = " + orderId);
+        System.out.println("USER ID FROM ORDER = " + order.getUserId());
 
+        // 🛑 HARD STOP IF userId IS NULL
+        if (order.getUserId() == null) {
+            throw new RuntimeException(
+                "Order was created without userId. Cannot generate invoice."
+            );
+        }
 
+        User user = userRepo.findById(order.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Prevent duplicate invoice
         if (invoiceRepo.findByOrderId(orderId) != null) {
             throw new RuntimeException("Invoice already generated");
         }
@@ -52,16 +59,15 @@ public class InvoiceService {
         invoice.setCustomerWhatsapp(user.getWhatsappNumber());
         invoice.setCustomerAddress(user.getAddress());
         invoice.setItems(order.getItems());
-
         invoice.setSubTotal(order.getTotalAmount());
-        invoice.setTaxAmount(0); // No tax now (can add GST later)
+        invoice.setTaxAmount(0);
         invoice.setTotalAmount(order.getTotalAmount());
-
         invoice.setPaymentMode(order.getPaymentMode());
         invoice.setPaymentRefId(order.getPaymentRefId());
 
         return invoiceRepo.save(invoice);
     }
+
     
     public Invoice getInvoiceByOrder(String orderId) {
         return invoiceRepo.findByOrderId(orderId);

@@ -4,8 +4,7 @@ package com.example.jewellery.demo.controller;
 
 
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +27,17 @@ public class UserController {
 
     // ✅ GET LOGGED-IN USER PROFILE
     @GetMapping("/me")
-    public ResponseEntity<UserProfileDto> getMyProfile() {
+    public ResponseEntity<?> getMyProfile() {
 
         User user = userService.getLoggedInUser();
 
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Please login to view profile");
+        }
+
         UserProfileDto dto = new UserProfileDto();
-        dto.setName(user.getName());
+        dto.setUsername(user.getUsername());
         dto.setWhatsappNumber(user.getWhatsappNumber());
         dto.setAlternateNumber(user.getAlternateNumber());
         dto.setAddress(user.getAddress());
@@ -43,6 +47,7 @@ public class UserController {
 
         return ResponseEntity.ok(dto);
     }
+
     
     // ✅ UPDATE LOGGED-IN USER PROFILE
     @PutMapping("/update")
