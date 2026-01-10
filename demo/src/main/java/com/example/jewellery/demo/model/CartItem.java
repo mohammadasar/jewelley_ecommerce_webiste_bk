@@ -11,6 +11,8 @@ public class CartItem {
     private String productName;  // Product name
     private double price;        // Product price
     private int quantity;        // Quantity user wants to buy
+    
+    
 	public String getProductId() {
 		return productId;
 	}

@@ -62,7 +62,8 @@ public class SecurityConfig {
             	        "/api/orders/**",
             	        "/api/invoices/**",
             	        "/api/user/**",
-            	        "/api/wishlist/**"
+            	        "/api/wishlist/**",
+            	        "/api/cart/**"
             	    ).hasAnyRole("USER", "ADMIN")
 
             	   
