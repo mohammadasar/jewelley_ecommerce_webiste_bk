@@ -26,7 +26,7 @@ public class CorsConfig {
 //        	   
 //        	));
        
-        config.setAllowedOrigins(List.of("https://jewelley-ecommerce-webiste-fr.vercel.app")); // ✅ Allow your Netlify domain
+        config.setAllowedOrigins(List.of("https://gurufashion.vercel.app")); // ✅ Allow your Netlify domain
         config.setAllowedHeaders(List.of("Origin", "Content-Type", "Accept", "Authorization","X-Requested-With"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
