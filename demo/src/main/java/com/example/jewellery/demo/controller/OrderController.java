@@ -79,7 +79,20 @@ public class OrderController {
         // 5️⃣ Save order
         return orderRepo.save(order);
     }
+     
+    @GetMapping("/my-orders")
+    public List<Order> getMyOrders() {
 
+        // 1️⃣ Get logged-in user
+        User loggedInUser = userService.getLoggedInUser();
+
+        if (loggedInUser == null) {
+            throw new RuntimeException("User not logged in");
+        }
+
+        // 2️⃣ Fetch orders using userId
+        return orderRepo.findByUserId(loggedInUser.getId());
+    }
 
     // 🔍 ADMIN – GET ALL ORDERS
     @GetMapping("/admin/all")

@@ -12,5 +12,7 @@ import com.example.jewellery.demo.model.Order;
 public interface OrderRepository extends MongoRepository<Order, String> {
     long count();
     List<Order> findByStatus(String status);
+    // 🔥 Fetch orders by userId
+    List<Order> findByUserId(String userId);
 
 }
