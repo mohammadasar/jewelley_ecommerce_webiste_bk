@@ -14,5 +14,6 @@ public interface OrderRepository extends MongoRepository<Order, String> {
     List<Order> findByStatus(String status);
     // 🔥 Fetch orders by userId
     List<Order> findByUserId(String userId);
+    List<Order> findByUserIdOrderByCreatedAtDesc(String userId);
 
 }

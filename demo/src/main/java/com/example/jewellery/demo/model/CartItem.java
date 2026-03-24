@@ -9,6 +9,7 @@ public class CartItem {
 
     private String productId;    // Reference to Product ID
     private String productName;  // Product name
+    private String image;   // ✅ product image
     private double price;        // Product price
     private int quantity;        // Quantity user wants to buy
     
@@ -37,6 +38,13 @@ public class CartItem {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
     
     
 }
