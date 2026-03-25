@@ -7,15 +7,22 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.jewellery.demo.model.Category;
 import com.example.jewellery.demo.repository.CategoryRepository;
 
 @Service
 public class CategoryServiceImpl {
+	
+	@Autowired
+	private Cloudinary cloudinary;
 
     private final CategoryRepository categoryRepository;
 
@@ -29,27 +36,55 @@ public class CategoryServiceImpl {
     // Automatically sets level if parent exists
     // -----------------------------------------------------
     // ✅ ADD CATEGORY WITH IMAGE
+//    public Category add(Category category, MultipartFile image) {
+//
+//        // Auto-set level
+//        if (category.getParentId() == null || category.getParentId().isEmpty()) {
+//            category.setLevel(1);
+//        } else {
+//            categoryRepository.findById(category.getParentId())
+//                    .ifPresent(parent -> category.setLevel(parent.getLevel() + 1));
+//        }
+//
+//        // ✅ Handle image
+//        if (image != null && !image.isEmpty()) {
+//            // TEMP solution (store image name)
+//            String imageUrl = "/uploads/categories/" + image.getOriginalFilename();
+//            category.setImageUrl(imageUrl);
+//
+//            // ⚠️ Later: save image to disk / cloud
+//        }
+//
+//        return categoryRepository.save(category);
+//    }
+
+    // Cloudinary   
     public Category add(Category category, MultipartFile image) {
 
-        // Auto-set level
-        if (category.getParentId() == null || category.getParentId().isEmpty()) {
-            category.setLevel(1);
-        } else {
-            categoryRepository.findById(category.getParentId())
-                    .ifPresent(parent -> category.setLevel(parent.getLevel() + 1));
-        }
+        try {
+            if (image != null && !image.isEmpty()) {
 
-        // ✅ Handle image
-        if (image != null && !image.isEmpty()) {
-            // TEMP solution (store image name)
-            String imageUrl = "/uploads/categories/" + image.getOriginalFilename();
-            category.setImageUrl(imageUrl);
+                // 🔥 Upload to Cloudinary
+                Map uploadResult = cloudinary.uploader().upload(
+                        image.getBytes(),
+                        ObjectUtils.emptyMap()
+                );
 
-            // ⚠️ Later: save image to disk / cloud
+                // ✅ Get image URL
+                String imageUrl = uploadResult.get("secure_url").toString();
+
+                // ✅ Save URL in DB (instead of file path)
+                category.setImageUrl(imageUrl);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Image upload failed");
         }
 
         return categoryRepository.save(category);
     }
+//    end cloudinary
 
     // -----------------------------------------------------
     // ✔ GET ALL CATEGORIES
@@ -73,33 +108,65 @@ public class CategoryServiceImpl {
     }
 
     // -----------------------------------------------------
+//    public Category update(String id, Category updated, MultipartFile image) {
+//
+//        return categoryRepository.findById(id).map(existing -> {
+//
+//            existing.setName(updated.getName());
+//            existing.setDescription(updated.getDescription());
+//            existing.setParentId(updated.getParentId());
+//
+//            // level logic
+//            if (updated.getParentId() == null || updated.getParentId().isEmpty()) {
+//                existing.setLevel(1);
+//            } else {
+//                categoryRepository.findById(updated.getParentId())
+//                    .ifPresent(parent -> existing.setLevel(parent.getLevel() + 1));
+//            }
+//
+//            // image update
+//            if (image != null && !image.isEmpty()) {
+//                String imageUrl = saveImage(image); // your image save logic
+//                existing.setImageUrl(imageUrl);
+//            }
+//
+//            return categoryRepository.save(existing);
+//
+//        }).orElse(null);
+//    }
+
+    
+//    update model in cloudinary
     public Category update(String id, Category updated, MultipartFile image) {
 
-        return categoryRepository.findById(id).map(existing -> {
+        Category existing = categoryRepository.findById(id).orElse(null);
 
-            existing.setName(updated.getName());
-            existing.setDescription(updated.getDescription());
-            existing.setParentId(updated.getParentId());
+        if (existing == null) return null;
 
-            // level logic
-            if (updated.getParentId() == null || updated.getParentId().isEmpty()) {
-                existing.setLevel(1);
-            } else {
-                categoryRepository.findById(updated.getParentId())
-                    .ifPresent(parent -> existing.setLevel(parent.getLevel() + 1));
-            }
+        existing.setName(updated.getName());
 
-            // image update
+        try {
             if (image != null && !image.isEmpty()) {
-                String imageUrl = saveImage(image); // your image save logic
+
+                Map uploadResult = cloudinary.uploader().upload(
+                        image.getBytes(),
+                        ObjectUtils.emptyMap()
+                );
+
+                String imageUrl = uploadResult.get("secure_url").toString();
+
                 existing.setImageUrl(imageUrl);
             }
 
-            return categoryRepository.save(existing);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Image upload failed");
+        }
 
-        }).orElse(null);
+        return categoryRepository.save(existing);
     }
-
+    
+    
     private String saveImage(MultipartFile image) {
         try {
             // Ensure directory exists
