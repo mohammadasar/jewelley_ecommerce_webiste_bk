@@ -34,6 +34,7 @@ public class CategoryServiceImpl {
     // -----------------------------------------------------
     // ✔ ADD CATEGORY
     // Automatically sets level if parent exists
+//    this is local
     // -----------------------------------------------------
     // ✅ ADD CATEGORY WITH IMAGE
 //    public Category add(Category category, MultipartFile image) {
@@ -58,7 +59,7 @@ public class CategoryServiceImpl {
 //        return categoryRepository.save(category);
 //    }
 
-    // Cloudinary   
+    // Cloudinary is live   
     public Category add(Category category, MultipartFile image) {
 
         try {
@@ -107,7 +108,7 @@ public class CategoryServiceImpl {
         categoryRepository.deleteById(id);
     }
 
-    // -----------------------------------------------------
+    // -----------------------------------------------------this is local ----------
 //    public Category update(String id, Category updated, MultipartFile image) {
 //
 //        return categoryRepository.findById(id).map(existing -> {
@@ -136,7 +137,7 @@ public class CategoryServiceImpl {
 //    }
 
     
-//    update model in cloudinary
+//    update model in cloudinary is live
     public Category update(String id, Category updated, MultipartFile image) {
 
         Category existing = categoryRepository.findById(id).orElse(null);
@@ -159,10 +160,9 @@ public class CategoryServiceImpl {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Image upload failed");
+            e.printStackTrace(); // 🔥 VERY IMPORTANT
+            throw new RuntimeException("Image upload failed: " + e.getMessage());
         }
-
         return categoryRepository.save(existing);
     }
     
