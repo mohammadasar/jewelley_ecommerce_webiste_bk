@@ -13,41 +13,56 @@ import com.example.jewellery.demo.repository.ProductRepository;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    
+    public List<Product> findByAttribute(String name, String value) {
+        return productRepository.findByAttributes(name, value);
+    }
 
-    // Normal constructor
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
+    // ✅ ADD PRODUCT
     public Product addProduct(Product product) {
         product.setDiscountPercent(calculateDiscount(product.getMrp(), product.getPrice()));
         product.setCreatedAt(LocalDateTime.now());
         product.setUpdatedAt(LocalDateTime.now());
+
         return productRepository.save(product);
     }
 
+    // ✅ UPDATE PRODUCT
     public Product updateProduct(String id, Product product) {
         return productRepository.findById(id).map(existing -> {
 
             existing.setProductName(product.getProductName());
             existing.setDescription(product.getDescription());
 
-            // 🔥 MULTI CATEGORY UPDATE
+            // ✅ Category
             existing.setCategoryIds(product.getCategoryIds());
 
+            // ✅ Price
             existing.setPrice(product.getPrice());
             existing.setMrp(product.getMrp());
             existing.setDiscountPercent(calculateDiscount(product.getMrp(), product.getPrice()));
+
+            // ✅ Images
             existing.setImages(product.getImages());
-            existing.setMaterial(product.getMaterial());
-            existing.setColor(product.getColor());
-            existing.setPlating(product.getPlating());
-            existing.setSize(product.getSize());
-            existing.setOccasion(product.getOccasion());
+
+            // 🔥 NEW: Dynamic Attributes
+            existing.setAttributes(product.getAttributes());
+
+            // 🔥 NEW: Variants (size, color, stock)
+            existing.setVariants(product.getVariants());
+
+            // ✅ Stock
             existing.setInStock(product.isInStock());
             existing.setQuantity(product.getQuantity());
+
+            // ✅ Other
             existing.setSku(product.getSku());
             existing.setBrand(product.getBrand());
+
             existing.setUpdatedAt(LocalDateTime.now());
 
             return productRepository.save(existing);
@@ -55,29 +70,35 @@ public class ProductService {
         }).orElse(null);
     }
 
+    // ✅ GET ALL
     public List<Product> getAll() {
         return productRepository.findAll();
     }
 
+    // ✅ GET BY ID
     public Optional<Product> getById(String id) {
         return productRepository.findById(id);
     }
 
+    // ✅ DELETE
     public void deleteById(String id) {
         productRepository.deleteById(id);
     }
 
-    // 🔥 MULTI CATEGORY FILTER (Correct Method)
+    // ✅ FILTER BY CATEGORY
     public List<Product> findByCategory(String catId) {
         return productRepository.findByCategoryIdsContaining(catId);
     }
 
+    // ✅ SEARCH
     public List<Product> searchByName(String productName) {
         return productRepository.findByProductNameContainingIgnoreCase(productName);
     }
 
+    // ✅ DISCOUNT CALCULATION
     private int calculateDiscount(double mrp, double price) {
         if (mrp <= 0 || price <= 0) return 0;
         return (int) Math.round(((mrp - price) / mrp) * 100);
     }
+    
 }
