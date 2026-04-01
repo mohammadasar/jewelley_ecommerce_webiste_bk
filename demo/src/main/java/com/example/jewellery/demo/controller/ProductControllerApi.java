@@ -1,5 +1,6 @@
 package com.example.jewellery.demo.controller;
 
+import com.example.jewellery.demo.dto.ProductFilterRequest;
 import com.example.jewellery.demo.model.Product;
 import com.example.jewellery.demo.service.ProductService;
 
@@ -73,15 +74,14 @@ public class ProductControllerApi {
         return ResponseEntity.ok(productService.findByCategory(catId));
     }
 
-    // 🔥 NEW: FILTER BY ATTRIBUTE (IMPORTANT)
-    @GetMapping("/filter")
-    public ResponseEntity<List<Product>> filterByAttribute(
-            @RequestParam String name,
-            @RequestParam String value) {
-
-        return ResponseEntity.ok(
-                productService.findByAttribute(name, value)
-        );
+    // 🔥 UPDATED: MULTI-CRITERIA FILTER (Amazon/Flipkart Style)
+    @PostMapping("/filter")
+    public ResponseEntity<List<Product>> filterProducts(@RequestBody ProductFilterRequest filterRequest) {
+        
+        // Pass the entire request object to the service layer
+        List<Product> filteredProducts = productService.filterProducts(filterRequest);
+        
+        return ResponseEntity.ok(filteredProducts);
     }
 }
 //
