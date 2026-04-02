@@ -20,7 +20,6 @@ import com.example.jewellery.demo.service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/api/orders")
-@CrossOrigin
 public class OrderController {
 
     private final InvoiceService invoiceService;

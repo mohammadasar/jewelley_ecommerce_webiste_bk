@@ -8,7 +8,7 @@ import com.example.jewellery.demo.model.Cart;
 
 @RestController
 @RequestMapping("/api/cart")
-@CrossOrigin("*")
+
 public class CartController {
 
     private final CartService cartService;

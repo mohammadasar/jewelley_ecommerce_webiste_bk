@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.jewellery.demo.service.WishlistService;
 
 
-@CrossOrigin(origins = "http://127.0.0.1:5501")
+
 @RestController
 @RequestMapping("/api/wishlist")
 public class WishlistController {

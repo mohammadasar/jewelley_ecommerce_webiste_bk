@@ -12,7 +12,6 @@ import com.example.jewellery.demo.service.InvoiceService;
 
 @RestController
 @RequestMapping("/api/invoices")
-@CrossOrigin(origins = "http://127.0.0.1:5501")
 public class InvoiceController {
 
     @Autowired

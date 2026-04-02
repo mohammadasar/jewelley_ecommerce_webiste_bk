@@ -14,7 +14,7 @@ import com.example.jewellery.demo.model.User;
 import com.example.jewellery.demo.service.UserServiceImpl;
 
 
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
