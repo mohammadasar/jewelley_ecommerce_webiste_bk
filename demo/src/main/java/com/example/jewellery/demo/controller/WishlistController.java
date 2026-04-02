@@ -8,7 +8,7 @@ import com.example.jewellery.demo.service.WishlistService;
 
 
 @RestController
-@CrossOrigin(origins = "http://127.0.0.1:5501")
+//@CrossOrigin(origins = "http://127.0.0.1:5501")
 @RequestMapping("/api/wishlist")
 public class WishlistController {
 

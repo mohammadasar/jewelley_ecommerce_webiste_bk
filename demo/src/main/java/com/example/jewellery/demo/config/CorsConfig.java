@@ -17,14 +17,14 @@ public class CorsConfig {
         
         config.setAllowCredentials(true);
         
-        config.setAllowedOrigins(List.of(
-        	    "http://localhost:8080",
-        	    "http://127.0.0.1:5501",
-        	    "http://localhost:5173",
-        	    "http://127.0.0.1:5500",
-        	    "https://gurufashion.vercel.app"
-        	   
-        	));
+//        config.setAllowedOrigins(List.of(
+//        	    "http://localhost:8080",
+//        	    "http://127.0.0.1:5501",
+//        	    "http://localhost:5173",
+//        	    "http://127.0.0.1:5500",
+//        	    "https://gurufashion.vercel.app"
+//        	   
+//        	));
        
 //        config.setAllowedOrigins(List.of("https://gurufashion.vercel.app")); // ✅ Allow your vercel domain
         config.setAllowedHeaders(List.of("Origin", "Content-Type", "Accept", "Authorization","X-Requested-With"));
