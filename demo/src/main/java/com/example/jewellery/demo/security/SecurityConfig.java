@@ -46,7 +46,8 @@ public class SecurityConfig {
             	        "/api/categories/image-file/**",
             	        "/uploads/**",
             	        "/api/banners",
-            	        "/api/banners/"
+            	        "/api/banners/",
+            	        "/api/banners/*" 
             	    ).permitAll()
 
             	    // Admin only
@@ -58,7 +59,8 @@ public class SecurityConfig {
             	        "/api/inventory/**",
             	        "/api/invoices/admin/**",
             	        "/api/banners/upload",
-            	        "/api/banners/update/**"
+            	        "/api/banners/update/**",
+            	        "/api/banners/**"
             	    ).hasRole("ADMIN")
 
             	    // User (logged-in customers)
