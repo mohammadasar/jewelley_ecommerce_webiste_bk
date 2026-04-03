@@ -44,7 +44,9 @@ public class SecurityConfig {
             	        "/api/products/**",
             	        "/api/categories/all",
             	        "/api/categories/image-file/**",
-            	        "/uploads/**"
+            	        "/uploads/**",
+            	        "/api/banners",
+            	        "/api/banners/"
             	    ).permitAll()
 
             	    // Admin only
