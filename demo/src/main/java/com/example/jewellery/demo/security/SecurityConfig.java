@@ -57,7 +57,8 @@ public class SecurityConfig {
             	        "/api/orders/admin/**",
             	        "/api/inventory/**",
             	        "/api/invoices/admin/**",
-            	        "/api/banners/**"
+            	        "/api/banners/upload",
+            	        "/api/banners/update/**"
             	    ).hasRole("ADMIN")
 
             	    // User (logged-in customers)
